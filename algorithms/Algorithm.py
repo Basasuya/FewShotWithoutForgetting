@@ -271,7 +271,7 @@ class Algorithm():
         eval_stats  = {}
         train_stats = {}
         self.init_record_of_best_model()
-        for self.curr_epoch in xrange(start_epoch, self.max_num_epochs):
+        for self.curr_epoch in range(start_epoch, self.max_num_epochs):
             self.logger.info('Training epoch [%3d / %3d]' %
                              (self.curr_epoch + 1, self.max_num_epochs))
             self.adjust_learning_rates(self.curr_epoch)
@@ -303,12 +303,12 @@ class Algorithm():
         self.bnumber = len(data_loader())
         for idx, batch in enumerate(tqdm(data_loader(epoch))):
             self.biter = idx # batch iteration.
-            self.global_iter = self.curr_epoch * len(data_loader) + self.biter
+            self.global_iter = self.curr_epoch * len(data_loader()) + self.biter
             train_stats_this = self.train_step(batch)
             train_stats.update(train_stats_this)
             if (idx+1) % disp_step == 0:
                 self.logger.info('==> Iteration [%3d][%4d / %4d]: %s' %
-                                 (epoch+1, idx+1, len(data_loader),
+                                 (epoch+1, idx+1, int(len(data_loader())),
                                   train_stats.average()))
 
         return train_stats.average()
@@ -319,12 +319,12 @@ class Algorithm():
         self.dloader = dloader
         self.dataset_eval = dloader.dataset
         self.logger.info('==> Dataset: %s [%d batches]' %
-                         (dloader.dataset.name, len(dloader)))
+                         (dloader.dataset.name, len(dloader())))
         for key, network in self.networks.items():
             network.eval()
 
         eval_stats = utils.DAverageMeter()
-        self.bnumber = len(dloader)
+        self.bnumber = len(dloader())
         for idx, batch in enumerate(tqdm(dloader())):
             self.biter = idx
             eval_stats_this = self.evaluation_step(batch)

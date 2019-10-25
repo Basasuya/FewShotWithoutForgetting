@@ -87,7 +87,7 @@ def buildLabelIndex(labels):
 
 def load_data(file):
     with open(file, 'rb') as fo:
-        data = pickle.load(fo)
+        data = pickle.load(fo, encoding='iso-8859-1')
     return data
 
 
@@ -375,7 +375,7 @@ class FewShotDataloader():
         Tnovel = []
         Exemplars = []
         assert((nTestNovel % nKnovel) == 0)
-        nEvalExamplesPerClass = nTestNovel / nKnovel
+        nEvalExamplesPerClass = int(nTestNovel / nKnovel)
 
         for Knovel_idx in range(len(Knovel)):
             imd_ids = self.sampleImageIdsFrom(

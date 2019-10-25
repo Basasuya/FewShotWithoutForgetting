@@ -52,7 +52,7 @@ class FewShot(Algorithm):
             train_test_stage = 'fewshot'
             assert(len(batch) == 6)
             images_train, labels_train, images_test, labels_test, K, nKbase = batch
-            self.nKbase = nKbase.squeeze()[0]
+            self.nKbase = nKbase.squeeze()[0].cuda()
             self.tensors['images_train'].resize_(images_train.size()).copy_(images_train)
             self.tensors['labels_train'].resize_(labels_train.size()).copy_(labels_train)
             labels_train = self.tensors['labels_train']
@@ -137,7 +137,7 @@ class FewShot(Algorithm):
         #************************** COMPUTE LOSSES *****************************
         loss_cls_all = criterion(cls_scores_var, labels_test_var)
         loss_total = loss_cls_all
-        loss_record['loss'] = loss_total.data[0]
+        loss_record['loss'] = loss_total.data.item()
         loss_record['AccuracyBase'] = top1accuracy(
             cls_scores_var.data, labels_test_var.data)
         #***********************************************************************
@@ -244,8 +244,8 @@ class FewShot(Algorithm):
 
             preds_data = cls_scores_var.data.cpu()
             labels_test_data = labels_test_var.data.cpu()
-            base_ids = torch.nonzero(labels_test_data < self.nKbase).view(-1)
-            novel_ids = torch.nonzero(labels_test_data >= self.nKbase).view(-1)
+            base_ids = torch.nonzero(labels_test_data < self.nKbase).cpu().view(-1)
+            novel_ids = torch.nonzero(labels_test_data >= self.nKbase).cpu().view(-1)
             preds_base = preds_data[base_ids,:]
             preds_novel = preds_data[novel_ids,:]
 
