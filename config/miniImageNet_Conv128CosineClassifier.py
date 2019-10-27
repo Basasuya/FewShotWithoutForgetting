@@ -18,7 +18,7 @@ data_test_opt['nKbase'] = nKbase
 data_test_opt['nExemplars'] = 1
 data_test_opt['nTestNovel'] = 15 * data_test_opt['nKnovel']
 data_test_opt['nTestBase'] = 15 * data_test_opt['nKnovel']
-data_test_opt['batch_size'] = 1
+data_test_opt['batch_size'] = 10
 data_test_opt['epoch_size'] = 2000
 
 config['data_train_opt'] = data_train_opt

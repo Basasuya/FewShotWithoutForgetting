@@ -271,6 +271,7 @@ class Algorithm():
         eval_stats  = {}
         train_stats = {}
         self.init_record_of_best_model()
+        print(start_epoch, self.max_num_epochs)
         for self.curr_epoch in range(start_epoch, self.max_num_epochs):
             self.logger.info('Training epoch [%3d / %3d]' %
                              (self.curr_epoch + 1, self.max_num_epochs))
@@ -331,7 +332,7 @@ class Algorithm():
             eval_stats.update(eval_stats_this)
 
         self.logger.info('==> Results: %s' % eval_stats.average())
-
+        
         return eval_stats.average()
 
     def adjust_learning_rates(self, epoch):
@@ -353,6 +354,7 @@ class Algorithm():
         self.best_epoch = None
 
     def keep_record_of_best_model(self, eval_stats, current_epoch):
+        
         if self.keep_best_model_metric_name is not None:
             metric_name = self.keep_best_model_metric_name
             if (metric_name not in eval_stats):
