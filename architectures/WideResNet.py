@@ -99,8 +99,7 @@ class WideResNet(nn.Module):
         out = F.avg_pool2d(out, 10)
         out = out.view(out.size(0), -1)
         # import pdb; pdb.set_trace()
-
-        return out, out
+        return out
 
 def create_model(opt):
     return WideResNet(opt)
