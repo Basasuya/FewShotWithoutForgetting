@@ -9,7 +9,7 @@ data_train_opt['nKbase'] = nKbase
 data_train_opt['nExemplars'] = 0
 data_train_opt['nTestNovel'] = 0
 data_train_opt['nTestBase'] = 32
-data_train_opt['batch_size'] = 8
+data_train_opt['batch_size'] = 4
 data_train_opt['epoch_size'] = data_train_opt['batch_size'] * 1000 
 
 data_test_opt = {}
