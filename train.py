@@ -52,6 +52,9 @@ parser.add_argument('--num_workers', type=int, default=4,
 parser.add_argument('--cuda', type=bool, default=True, help='enables cuda')
 parser.add_argument('--disp_step', type=int, default=200,
     help='display step during training')
+parser.add_argument('--testset', default=False, action='store_true',
+    help='If True, the model is evaluated on the test set of MiniImageNet. '
+         'Otherwise, the validation set is used for evaluation.')
 args_opt = parser.parse_args()
 
 exp_config_file = os.path.join('.','config', args_opt.config + '.py')
@@ -69,6 +72,12 @@ data_train_opt = config['data_train_opt']
 data_test_opt = config['data_test_opt']
 
 train_split, test_split = 'train', 'val'
+test_epoch_size = 2000
+
+if args_opt.testset:
+    test_split = 'test'
+    test_epoch_size = 600
+
 dataset_train = MiniImageNet(phase=train_split)
 dataset_test = MiniImageNet(phase=test_split)
 
@@ -93,7 +102,7 @@ dloader_test = FewShotDataloader(
     nTestBase=data_test_opt['nTestBase'], # num test examples for all the base categories
     batch_size=data_test_opt['batch_size'],
     num_workers=0,
-    epoch_size=data_test_opt['epoch_size'], # num of batches per epoch
+    epoch_size=test_epoch_size, # num of batches per epoch
 )
 
 config['disp_step'] = args_opt.disp_step

@@ -52,7 +52,10 @@ class FewShot(Algorithm):
             train_test_stage = 'fewshot'
             assert(len(batch) == 6)
             images_train, labels_train, images_test, labels_test, K, nKbase = batch
-            self.nKbase = nKbase.squeeze().item()
+            if(nKbase.squeeze().shape == torch.Size([])):
+                self.nKbase = nKbase.squeeze().item()
+            else:
+                self.nKbase = nKbase.squeeze()[0]
             self.tensors['images_train'].resize_(images_train.size()).copy_(images_train)
             self.tensors['labels_train'].resize_(labels_train.size()).copy_(labels_train)
             labels_train = self.tensors['labels_train']
@@ -70,7 +73,10 @@ class FewShot(Algorithm):
             train_test_stage = 'base_classification'
             assert(len(batch) == 4)
             images_test, labels_test, K, nKbase = batch
-            self.nKbase = nKbase.squeeze()[0]
+            if(nKbase.squeeze().shape == torch.Size([])):
+                self.nKbase = nKbase.squeeze().item()
+            else:
+                self.nKbase = nKbase.squeeze()[0]
             self.tensors['images_test'].resize_(images_test.size()).copy_(images_test)
             self.tensors['labels_test'].resize_(labels_test.size()).copy_(labels_test)
             self.tensors['Kids'].resize_(K.size()).copy_(K)
