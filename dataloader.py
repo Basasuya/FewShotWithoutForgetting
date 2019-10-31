@@ -176,6 +176,7 @@ class MiniImageNet(data.Dataset):
             self.transform = transforms.Compose([
                 transforms.RandomCrop(84, padding=8),
                 transforms.RandomHorizontalFlip(),
+                transforms.RandomChoice([lambda x: transforms.functional.rotate(x, 0), lambda x: transforms.functional.rotate(x, 90), lambda x: transforms.functional.rotate(x, 180),lambda x: transforms.functional.rotate(x, 270)]),
                 lambda x: np.asarray(x),
                 transforms.ToTensor(),
                 normalize
